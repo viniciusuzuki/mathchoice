@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <title>Magic 7 Ball</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <meta name="description" content="Are you ready for IB Mathematics? Take this free quiz for personalized study tips so that you are ready for the math course you need.">
+  <style>
+    #visualizer {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .bar-container {
+      margin-bottom: 1rem;
+    }
+    .bar-label {
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+    .bar-track {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 24px;
+    }
+    .bar-fill {
+      height: 100%;
+      width: 33.33%;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+    #aahl-fill { background-color: #ff3860; }
+    #aasl-fill { background-color: #3273dc; }
+    #aisl-fill { background-color: #00d1b2; }
+    
+    .modal { display: none; }
+    .modal.is-active { display: flex; }
+  </style>
+</head>
+<body>
+  <div class="container p-5">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <h1 class="title">Are you ready for IB Mathematics?</h1>
+        <p class="subtitle">Version 3.0.0 on 2026-08-26</p>
+        <h2 class="is-size-4 mt-6 mb-5">Instructions</h2>
+        <p>See <a rel="external noopener noreferrer nofollow" referrerpolicy="no-referrer" target="_blank" href="https://www.ibo.org/globalassets/new-structure/university-admission/pdfs/ucc-supporting-student-choice-in-mathematics-en.pdf">[ibo.org] Supporting Student Choice in DP Mathematics guide, page 7</a> for which math course to take to meet university admission requirements.</p>
+        <p>The following will help you understand the course(s) that best suit your skills, habits, and circumstances today, without any additional preparation.</p>
+        <p>At the end, personalized study tips will be provided to be more successful.</p>
+        <p>With each answer, the "Results" chart updates. Larger slices mean better fits.</p>
+        <p class="is-size-7 mt-2 has-text-grey-dark"><sup>δ</sup> indicates a question that heavily impacts the results.</p>
+      </div>
+    </div>
+    
+    <div class="columns is-flex-direction-row-reverse is-centered">
+      <div class="column is-3" id="visualWrapper">
+        <h2 class="is-size-4">Results</h2>
+        <div id="visualizer">
+          <div class="bar-container">
+            <span class="bar-label">AA HL</span>
+            <div class="bar-track"><div id="aahl-fill" class="bar-fill"></div></div>
+          </div>
+          <div class="bar-container">
+            <span class="bar-label">AA SL</span>
+            <div class="bar-track"><div id="aasl-fill" class="bar-fill"></div></div>
+          </div>
+          <div class="bar-container">
+            <span class="bar-label">AI SL</span>
+            <div class="bar-track"><div id="aisl-fill" class="bar-fill"></div></div>
+          </div>
+        </div>
+      </div>
+      
+      <form class="column is-5" id="quizForm">
+        <h2 class="is-size-4">Enjoyment</h2>
+        <div class="field mt-5">
+          <label class="label">Do you like mathematics?<sup class="has-text-grey-dark">δ</sup></label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="like">
+                <option></option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5 is-grouped-multiline">
+          <label class="label">What do you dislike about studying mathematics?</label>
+          <div class="p-0 control">
+            <div class="columns m-0">
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="bore" class="quiz-input"> 😑 Boring
+              </label>
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="time" class="quiz-input"> 😤 Time-consuming
+              </label>
+            </div>
+            <div class="columns m-0">
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="forget" class="quiz-input"> 😭 Hard to remember
+              </label>
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="abstract" class="quiz-input"> 😕 Too abstract
+              </label>
+            </div>
+            <div class="columns m-0">
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="other" class="quiz-input"> 😬 Other
+              </label>
+              <label class="column checkbox is-8-mobile px-0 py-3">
+                <input name="why" type="checkbox" value="love" class="quiz-input"> 😇 No I <strong>love</strong> studying maths!
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5">
+          <label class="label">Do you watch maths videos or read maths articles not for school?</label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="vid">
+                <option></option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5">
+          <label class="label">Do you regularly solve puzzles or riddles of any kind?</label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="puzzle">
+                <option></option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="is-size-4 mt-6 pt-4">Experience</h2>
+        <div class="field mt-5">
+          <label class="label">Compared to people you know, are you good at mathematics?<sup class="has-text-grey-dark">δ</sup></label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="good">
+                <option></option>
+                <option value="0">Very Bad</option>
+                <option value="1">Bad</option>
+                <option value="2">Good</option>
+                <option value="3">Very Good</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5">
+          <label class="label">What is mathematics about?</label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="idea">
+                <option></option>
+                <option value="formula">Formulas</option>
+                <option value="general">Generalizations</option>
+                <option value="num">Numbers</option>
+                <option value="pattern">Patterns</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="is-size-4 mt-6">Skills</h2>
+        <div class="field mt-5">
+          <label class="label">15 minutes on today's final maths homework problem did not get you very far. You are relatively free today. With all resources allowed, what would you do?</label>
+          <div class="column p-0 is-8-mobile control is-7">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="strat">
+                <option></option>
+                <option value="more">😠 Try for another 5 minutes</option>
+                <option value="hint">🙏 Get a hint / Re-read notes</option>
+                <option value="soln">🙌 Get the full solution</option>
+                <option value="later">😴 Come back to it later</option>
+                <option value="skip">😅 Give up; can't solve them all</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5">
+          <label class="label">Do you use popular online maths resources, such as but not limited to 
+            <a href="https://www.wolframalpha.com/" rel="noopener noreferrer" target="_blank">Wolfram|Alpha</a>, 
+            <a href="https://www.desmos.com/calculator" rel="noopener noreferrer" target="_blank">desmos</a>, 
+            <a href="https://www.geogebra.org/calculator" rel="noopener noreferrer" target="_blank">GeoGebra</a>, or 
+            <a href="https://www.khanacademy.org/" rel="noopener noreferrer" target="_blank">Khan Academy</a>?
+          </label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="web">
+                <option></option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5">
+          <label class="label">On tests, do you catch most of your arithmetic and algebraic mistakes?</label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="catch">
+                <option></option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="is-size-4 mt-6">Commitment</h2>
+        <div class="field mt-5">
+          <label class="label">Outside of class in each school week, for how long are you willing to work on IB maths?</label>
+          <div class="column p-0 is-8-mobile control is-4">
+            <div class="column p-0 is-12 select">
+              <select class="column p-0 is-12-mobile is-12 quiz-input" id="hours">
+                <option></option>
+                <option value="6">Under 6 hours</option>
+                <option value="9">6 to 9 hours</option>
+                <option value="14">9 to 14 hours</option>
+                <option value="21">Over 14 hours</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field mt-5 is-grouped">
+          <div class="column p-0 is-8-mobile control is-4">
+            <button class="button is-info" type="button" id="submit">Get Tips</button>
+          </div>
+        </div>
+        
+        <hr class="mt-12">
+        <div><a class="has-text-grey mt-2 inline pre-has-sign" href="https://geta7.com/aa-notes/">Math Analysis and Approaches Notes</a></div>
+        <div><a class="has-text-grey mt-2 block100" href="https://geta7.com/bolt/binomial/"><strong>NEW</strong> Bolt ⚡ Binomial</a></div>
+        <div><a class="has-text-grey mt-2 block100" href="https://geta7.com/bolt/trig-ratios/">Bolt ⚡ Trig Ratios</a></div>
+        <div><a class="has-text-grey mt-2 block100" href="https://geta7.com/may-2025-tok-titles/">May 2025 TOK essay guide</a></div>
+        <div><a class="has-text-grey mt-2 block100" href="https://geta7.com/ib-faq/">IB Diploma Programme FAQ and links</a></div>
+        <div><a class="has-text-grey mt-2 block100" href="https://geta7.com/privacy-policy/">Privacy policy</a></div>
+      </form>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="resultModal">
+      <div class="modal-background" id="modal-bg"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <h2 class="modal-card-title" id="courseResult">Your Best Fit</h2>
+          <button class="delete" aria-label="close" id="modal-close"></button>
+        </header>
+        <section class="modal-card-body">
+          <p id="detailResult"></p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = document.querySelectorAll('.quiz-input');
+      const aaHlFill = document.getElementById('aahl-fill');
+      const aaSlFill = document.getElementById('aasl-fill');
+      const aislFill = document.getElementById('aisl-fill');
+      
+      let currentScores = { aaHl: 33.33, aaSl: 33.33, aiSl: 33.33 };
+
+      const updateVisualizer = () => {
+        let aaHl = 10;
+        let aaSl = 10;
+        let aiSl = 10;
+
+        // Enjoyment
+        const like = document.getElementById('like').value;
+        if (like === '1') { aaHl += 15; aaSl += 10; }
+        else if (like === '0') { aiSl += 15; aaSl += 5; }
+
+        // Checkboxes
+        const whys = document.querySelectorAll('input[name="why"]:checked');
+        whys.forEach(cb => {
+          if (cb.value === 'love') { aaHl += 20; aaSl += 10; }
+          if (cb.value === 'abstract') { aiSl += 15; aaHl -= 5; }
+          if (cb.value === 'time') { aaHl -= 10; }
+        });
+
+        if (document.getElementById('vid').value === '1') aaHl += 10;
+        if (document.getElementById('puzzle').value === '1') { aaHl += 5; aaSl += 5; }
+
+        // Experience
+        const good = document.getElementById('good').value;
+        if (good === '3') { aaHl += 20; aaSl += 10; }
+        else if (good === '2') { aaSl += 15; aaHl += 5; }
+        else if (good === '1') { aiSl += 10; }
+        else if (good === '0') { aiSl += 20; aaHl -= 15; }
+
+        const idea = document.getElementById('idea').value;
+        if (idea === 'general' || idea === 'pattern') { aaHl += 10; aaSl += 5; }
+        if (idea === 'formula' || idea === 'num') { aiSl += 10; }
+
+        // Skills
+        const strat = document.getElementById('strat').value;
+        if (strat === 'more') aaHl += 15;
+        if (strat === 'hint') { aaHl += 5; aaSl += 10; }
+        if (strat === 'skip') { aiSl += 15; aaHl -= 10; }
+
+        if (document.getElementById('web').value === '1') { aaHl += 5; aaSl += 5; }
+        if (document.getElementById('catch').value === '1') { aaHl += 10; aaSl += 5; }
+
+        // Commitment
+        const hours = document.getElementById('hours').value;
+        if (hours === '21') { aaHl += 25; }
+        if (hours === '14') { aaHl += 15; aaSl += 10; }
+        if (hours === '9') { aaSl += 15; aiSl += 5; }
+        if (hours === '6') { aiSl += 20; aaHl -= 15; }
+
+        // Normalize to prevent negative widths
+        aaHl = Math.max(0, aaHl);
+        aaSl = Math.max(0, aaSl);
+        aiSl = Math.max(0, aiSl);
+
+        const total = aaHl + aaSl + aiSl || 1;
+        currentScores = {
+          aaHl: (aaHl / total) * 100,
+          aaSl: (aaSl / total) * 100,
+          aiSl: (aiSl / total) * 100
+        };
+
+        aaHlFill.style.width = `${currentScores.aaHl}%`;
+        aaSlFill.style.width = `${currentScores.aaSl}%`;
+        aislFill.style.width = `${currentScores.aiSl}%`;
+      };
+
+      inputs.forEach(input => {
+        input.addEventListener('change', updateVisualizer);
+      });
+
+      // Modal Logic
+      const modal = document.getElementById('resultModal');
+      const btnSubmit = document.getElementById('submit');
+      const btnClose = document.getElementById('modal-close');
+      const bgClose = document.getElementById('modal-bg');
+      const detailResult = document.getElementById('detailResult');
+      const courseTitle = document.getElementById('courseResult');
+
+      const closeModal = () => modal.classList.remove('is-active');
+
+      btnSubmit.addEventListener('click', () => {
+        // Determine the winner for tailored tips
+        let winnerName = "Math AI SL";
+        let maxScore = currentScores.aiSl;
+        let tip = "Math AI SL looks like your strongest fit. Get extremely comfortable with your GDC, focus heavily on statistics and modeling, and always relate the math back to real-world contexts.";
+
+        if (currentScores.aaHl > maxScore) {
+          maxScore = currentScores.aaHl;
+          winnerName = "Math AA HL";
+          tip = "Math AA HL is a beast, but you seem ready. You'll need heavy algebra skills, a comfort with abstract proof-based thinking, and a serious time commitment to practice consistently.";
+        }
+        if (currentScores.aaSl > maxScore) {
+          winnerName = "Math AA SL";
+          tip = "Math AA SL is a solid fit. Focus on building strong calculus and trigonometry foundations, and make sure you are actively catching algebraic mistakes during practice.";
+        }
+
+        courseTitle.innerText = `Top Match: ${winnerName}`;
+        detailResult.innerText = tip;
+        modal.classList.add('is-active');
+      });
+
+      btnClose.addEventListener('click', closeModal);
+      bgClose.addEventListener('click', closeModal);
+    });
+  </script>
+</body>
+</html>
